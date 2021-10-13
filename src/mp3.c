@@ -38,22 +38,28 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
     return (144 * bit_rate)/sample_rate + padding;
 }
 
-int read_header(uint64_t position, const char* filename) {
+int read_header(uint64_t position, FILE* f) {
 
-    int fd = open(filename, O_RDONLY);
-
-    if (fd == -1) {
-        printf("[MP3] Opening the file resulted in a failure\n");
-        return -1;
+    fseek(f, position, SEEK_SET);
     }
+
 
     byte buffer[4];
 
-    ssize_t status = pread(fd, (void*)buffer, 4, position);
+    fseek(f, -1, SEEK_CUR);
 
-    if (status == -1) {
+    long cur = ftell(f);
+
+    if (cur != position) {
+        printf("Position mismatch: %d != %d\nAborting...\n", cur, position);
+        return -1;
+    }
+
+    uint64_t result = fread_unlocked(buffer, 1, 4, f);
+    // ssize_t status = pread(f, (void*)buffer, 4, position);
+
+    if (result != 4) {
         printf("[MP3] Reading the file resulted in a failure\n");
-        close(fd);
         return -1;
     }
 
@@ -107,7 +113,6 @@ int read_header(uint64_t position, const char* filename) {
     }
 
 
-    close(fd);
     return 0;
 
 }

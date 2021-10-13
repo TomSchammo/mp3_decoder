@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "string.h"
-#include "stdio.h"
 
 #include "sys/stat.h"
 #include "sys/types.h"
@@ -72,7 +71,9 @@ int main(int argc, char *argv[])
 
         else {
             uint32_t start_position = (uint32_t)start;
-            read_header(start_position, argv[1]);
+            FILE* f = fopen(argv[1], "rb");
+            read_header(start_position, f);
+            fclose(f);
             printf("done reading\n");
             return 0;
         }
