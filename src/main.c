@@ -72,7 +72,10 @@ int main(int argc, char *argv[])
         else {
             uint32_t start_position = (uint32_t)start;
             FILE* f = fopen(argv[1], "rb");
-            read_header(start_position, f);
+
+            mp3_container mp3 = {f, start_position, 0};
+
+            read_header(mp3.start, mp3);
             fclose(f);
             printf("done reading\n");
             return 0;

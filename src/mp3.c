@@ -10,7 +10,6 @@ const uint16_t bitrate_lookup_table[14] = {32, 40, 48, 56, 64, 80, 96, 112, 128,
 // lookup table for sampling rates of MPEG-1 Layer 3 stanard in HZ/100
 const uint16_t sampling_lookup_table[3] = {441, 480, 320};
 
-
 typedef enum {
     Stereo = 0,
     JointStereo = 1,
@@ -38,13 +37,13 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
     return (144 * bit_rate)/sample_rate + padding;
 }
 
-int read_header(uint64_t position, FILE* f) {
+int read_header(uint64_t position, mp3_container mp3) {
 
-    if (ftell(f) != position)
-        fseek(f, position, SEEK_SET);
+    if (ftell(mp3.stream) != position)
+        fseek(mp3.stream, position, SEEK_SET);
 
 
-    if (getc(f) == EOF) {
+    if (getc(mp3.stream) == EOF) {
         printf("Reached the end of the file\n");
         return 0;
     }
@@ -53,16 +52,16 @@ int read_header(uint64_t position, FILE* f) {
 
     byte buffer[4];
 
-    fseek(f, -1, SEEK_CUR);
+    fseek(mp3.stream, -1, SEEK_CUR);
 
-    long cur = ftell(f);
+    long cur = ftell(mp3.stream);
 
     if (cur != position) {
         printf("Position mismatch: %ld != %lu\nAborting...\n", cur, position);
         return -1;
     }
 
-    uint64_t result = fread_unlocked(buffer, 1, 4, f);
+    uint64_t result = fread_unlocked(buffer, 1, 4, mp3.stream);
     // ssize_t status = pread(f, (void*)buffer, 4, position);
 
     if (result != 4) {
@@ -123,7 +122,7 @@ int read_header(uint64_t position, FILE* f) {
 
         printf("frame length: %d bytes\n", frame_length);
 
-        read_header(position + frame_length, f);
+        read_header(position + frame_length, mp3);
 
     }
 
