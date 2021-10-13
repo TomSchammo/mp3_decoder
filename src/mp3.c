@@ -76,32 +76,37 @@ int read_header(uint64_t position, mp3_container mp3) {
 
     byte buffer[4];
 
-    uint64_t result = fread_unlocked(buffer, 1, 4, mp3.stream);
-    // ssize_t status = pread(f, (void*)buffer, 4, position);
+
+    // TODO I don't know if the file has to be locked.
+    //      Theoretically there should not be another program reading,
+    //      but I'll leave it like this for now.
+    uint64_t result = fread(buffer, 1, 4, mp3.stream);
+
 
     if (result != 4) {
+        // TODO should probably just try again and read what's missing
         printf("[MP3] Reading the file resulted in a failure\n");
         return -1;
     }
 
 
     // 12 bit syncword
-    // upper 4 bits are zeroed out
     uint16_t syncword = (buffer[0] << 4) | (buffer[1] >> 4);
 
-    printf("syncword: 0x%03x\n", syncword);
 
     if (syncword != 0xfff) {
         printf("Syncword 0x%03x is not 0xfff\n", syncword);
         return -1;
     }
 
-    byte t = buffer[1] & (0x0f);
 
-    if ((t & 0x8) && (t & 0x06) == 0x02) {
+    byte version_layer = buffer[1] & (0x0f);
+
+    if ((version_layer & 0x8) && (version_layer & 0x06) == 0x02) {
         printf("MPEG1 Layer 3\n");
 
-        if (t & 0x01)
+        // TODO does this matter?
+        if (version_layer & 0x01)
             printf("Error protection is off\n");
 
         // 0000 and 1111 are not valid values (will result in crashing the program currently, probably should change that)
