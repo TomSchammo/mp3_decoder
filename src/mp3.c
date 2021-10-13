@@ -109,8 +109,15 @@ int read_header(uint64_t position, mp3_container mp3) {
         if (version_layer & 0x01)
             printf("Error protection is off\n");
 
-        // 0000 and 1111 are not valid values (will result in crashing the program currently, probably should change that)
-        uint32_t bitrate = bitrate_lookup_table[((buffer[2] & 0xf0) >> 4) -1] * 1000;
+        byte bitrate_key = (buffer[2] & 0xf0) >> 4;
+
+        // 0000 and 1111 are not valid values
+        if (bitrate_key == 0x0 || bitrate_key == 0xf) {
+            printf("bitrate_key of 0x%x is not valid\n", bitrate_key);
+            return -1;
+        }
+
+        uint32_t bitrate = bitrate_lookup_table[bitrate_key -1] * 1000;
 
 
         printf("bitrate: %d\n", bitrate);
