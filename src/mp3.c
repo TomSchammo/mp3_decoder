@@ -118,17 +118,12 @@ int read_header(uint64_t position, mp3_container mp3) {
         }
 
         uint32_t bitrate = bitrate_lookup_table[bitrate_key -1] * 1000;
-
-
         printf("bitrate: %d\n", bitrate);
+
+
         uint32_t sampling_frequency = sampling_lookup_table[(buffer[2] & 0x0f) >> 2] * 100;
 
-        // 0 -> not padded
-        // 1 -> padding has been added
         byte padding = (buffer[2] & 0x02) >> 1;
-
-        // application specific, doesn't matter
-        // byte priv_bit = (buffer[2] & 0x01);
 
         ChannelMode mode = (buffer[3] & 0xf0) >> 6;
 
@@ -155,12 +150,6 @@ int read_header(uint64_t position, mp3_container mp3) {
             }
         }
 
-
-        // 0 -> not copyrighted (not important)
-        // byte copyright_bit = (buffer[3] & 0x0f) >> 3;
-
-        // 0 -> copy (not important)
-        // byte original_bit = (buffer[3] & 0x04) >> 2;
 
         Emphasis emphasis = buffer[3] & 0x03;
 
