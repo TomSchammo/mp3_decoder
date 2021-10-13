@@ -72,7 +72,12 @@ int read_header(uint64_t position, FILE* f) {
     // upper 4 bits are zeroed out
     uint16_t syncword = (buffer[0] << 4) | (buffer[1] >> 4);
 
-    printf("syncword: %d\n", syncword);
+    printf("syncword: 0x%03x\n", syncword);
+
+    if (syncword != 0xfff) {
+        printf("Syncword 0x%03x is not 0xfff\n", syncword);
+        return -1;
+    }
 
     byte t = buffer[1] & (0x0f);
 
