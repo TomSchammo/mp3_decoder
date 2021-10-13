@@ -1,7 +1,6 @@
 #include "mp3.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include "stdio.h"
 
 
 // lookup for bitrates of MPEG-1 Layer 3 stanard in kb/s
