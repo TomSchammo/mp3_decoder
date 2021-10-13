@@ -32,6 +32,7 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
     return (144 * bit_rate)/sample_rate + padding;
 }
 
+
 int read_header(uint64_t position, mp3_container mp3) {
 
     if (ftell(mp3.stream) != position)
