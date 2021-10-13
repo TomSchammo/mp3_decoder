@@ -33,29 +33,48 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
 }
 
 
-int read_header(uint64_t position, mp3_container mp3) {
+int verify_position(FILE* stream, uint64_t position) {
 
-    if (ftell(mp3.stream) != position)
-        fseek(mp3.stream, position, SEEK_SET);
+    if (ftell(stream) != position)
+        fseek(stream, position, SEEK_SET);
 
 
-    if (getc(mp3.stream) == EOF) {
+    if (getc(stream) == EOF) {
         printf("Reached the end of the file\n");
-        return 0;
+        return 1;
     }
 
     printf("position: %lu\n", position);
 
-    byte buffer[4];
+    fseek(stream, -1, SEEK_CUR);
 
-    fseek(mp3.stream, -1, SEEK_CUR);
-
-    long cur = ftell(mp3.stream);
+    long cur = ftell(stream);
 
     if (cur != position) {
         printf("Position mismatch: %ld != %lu\nAborting...\n", cur, position);
         return -1;
     }
+
+    return 0;
+
+}
+
+
+int read_header(uint64_t position, mp3_container mp3) {
+
+
+    int status = verify_position(mp3.stream, position);
+
+    // failure
+    if (status == -1)
+        return -1;
+
+    // EOF
+    else if (status == 1)
+     return 0;
+
+
+    byte buffer[4];
 
     uint64_t result = fread_unlocked(buffer, 1, 4, mp3.stream);
     // ssize_t status = pread(f, (void*)buffer, 4, position);
