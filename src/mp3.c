@@ -40,7 +40,10 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
 
 int read_header(uint64_t position, FILE* f) {
 
-    fseek(f, position, SEEK_SET);
+    if (ftell(f) != position)
+        fseek(f, position, SEEK_SET);
+
+
     if (getc(f) == EOF) {
         printf("Reached the end of the file\n");
         return 0;
