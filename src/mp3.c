@@ -58,7 +58,7 @@ int read_header(uint64_t position, FILE* f) {
     long cur = ftell(f);
 
     if (cur != position) {
-        printf("Position mismatch: %d != %d\nAborting...\n", cur, position);
+        printf("Position mismatch: %ld != %lu\nAborting...\n", cur, position);
         return -1;
     }
 
