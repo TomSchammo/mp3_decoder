@@ -10,6 +10,7 @@ const uint16_t bitrate_lookup_table[14] = {32, 40, 48, 56, 64, 80, 96, 112, 128,
 // lookup table for sampling rates of MPEG-1 Layer 3 stanard in HZ/100
 const uint16_t sampling_lookup_table[3] = {441, 480, 320};
 
+
 typedef enum {
     Stereo = 0,
     JointStereo = 1,
