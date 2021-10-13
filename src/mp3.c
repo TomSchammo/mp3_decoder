@@ -115,6 +115,13 @@ int read_header(uint64_t position, FILE* f) {
         // byte original_bit = (buffer[3] & 0x04) >> 2;
 
         Emphasis emphasis = buffer[3] & 0x03;
+
+        uint32_t frame_length = calculate_frame_length(bitrate, sampling_frequency, padding);
+
+        printf("frame length: %d bytes\n", frame_length);
+
+        read_header(position + frame_length, f);
+
     }
 
     else {
