@@ -25,15 +25,10 @@ typedef enum {
     CCITJ17 = 3
 } Emphasis;
 
+
 uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte padding) {
 
-    // int((144 * BitRate / SampleRate ) + Padding);
-
-    printf("--------------\n");
-    printf("bitrate: %d\nsampling rate: %d\npadding: %x\n", bit_rate, sample_rate, padding);
-    printf("--------------\n");
-
-    // TODO
+    // TODO this 144 differs for other MPEG version and Layers
     return (144 * bit_rate)/sample_rate + padding;
 }
 
