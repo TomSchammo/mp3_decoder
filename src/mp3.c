@@ -30,8 +30,12 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
 
     // int((144 * BitRate / SampleRate ) + Padding);
 
+    printf("--------------\n");
+    printf("bitrate: %d\nsampling rate: %d\npadding: %x\n", bit_rate, sample_rate, padding);
+    printf("--------------\n");
+
     // TODO
-    return (144) * (bit_rate/sample_rate) + padding;
+    return (144 * bit_rate)/sample_rate + padding;
 }
 
 int read_header(uint64_t position, const char* filename) {
