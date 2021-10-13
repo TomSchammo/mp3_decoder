@@ -26,7 +26,7 @@ typedef enum {
     CCITJ17 = 3
 } Emphasis;
 
-uint32_t calculate_frame_length(uint16_t bit_rate, uint16_t sample_rate, byte padding) {
+uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte padding) {
 
     // int((144 * BitRate / SampleRate ) + Padding);
 
