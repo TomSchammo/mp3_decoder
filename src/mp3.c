@@ -106,13 +106,22 @@ int read_header(uint64_t position, mp3_container mp3) {
         ChannelMode mode = (buffer[3] & 0xf0) >> 6;
 
 
-        if (mode == Mono) {
-            mp3.info_offset = mp3.start + 21;
+        if (mp3.info_offset == 0) {
+            if (mode == Mono) {
+                mp3.info_offset = mp3.start + 21;
+            }
+
+            else {
+                mp3.info_offset = mp3.start + 36;
+
+                if (mode == JointStereo) {
+                    // TODO figure out which joint stereo mode is used
+                    byte mode_extension_bin = (buffer[3] & 0x30) >> 4;
+                }
+            }
         }
 
         else {
-            mp3.info_offset = mp3.start + 36;
-
             if (mode == JointStereo) {
                 // TODO figure out which joint stereo mode is used
                 byte mode_extension_bin = (buffer[3] & 0x30) >> 4;
