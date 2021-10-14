@@ -60,4 +60,14 @@ uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte pa
  */
 int verify_position(FILE* stream, uint64_t position);
 
+
+/**
+ * Reads a Xing or Info tag
+ *
+ * @param mp3 is pointer to a container containing various information about the mp3 file
+ *
+ * @return 0 on success, -1 on failure
+ */
+int read_xing(mp3_container* mp3);
+
 #endif // MP3_H

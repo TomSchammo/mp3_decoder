@@ -169,3 +169,34 @@ int read_header(uint64_t position, mp3_container mp3) {
     return 0;
 
 }
+
+
+int read_xing(mp3_container* mp3) {
+
+    int status = verify_position(mp3->stream, mp3->info_offset);
+
+    // failure or EOF
+    if (status == -1 || status == 1)
+        return -1;
+
+    uint32_t tag;
+
+    uint64_t result = fread(&tag, 4, 1, mp3->stream);
+
+    // if the tag is an 'Info' tag
+    if (tag == 0x496E666F) {
+        // TODO
+    }
+
+    // if the tag is a 'Xing' tag
+    else if (tag == 0x58696E67) {
+        // TODO
+    }
+
+    else {
+        printf("Position mismatch. Expected magic bytes 'Info' or 'Xing', but got 0x%x instead\n", tag);
+        return -1;
+    }
+
+    return 0;
+}
