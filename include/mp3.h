@@ -34,7 +34,7 @@ typedef struct {
  *
  * @return 0 if the function terminates successfully, -1 if it terminates on a failure
  */
-int read_header(uint64_t position, mp3_container mp3);
+int read_header(uint64_t position, mp3_container* mp3);
 
 
 /**

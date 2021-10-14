@@ -60,10 +60,10 @@ int verify_position(FILE* stream, uint64_t position) {
 }
 
 
-int read_header(uint64_t position, mp3_container mp3) {
+int read_header(uint64_t position, mp3_container* mp3) {
 
 
-    int status = verify_position(mp3.stream, position);
+    int status = verify_position(mp3->stream, position);
 
     // failure
     if (status == -1)
@@ -80,7 +80,7 @@ int read_header(uint64_t position, mp3_container mp3) {
     // TODO I don't know if the file has to be locked.
     //      Theoretically there should not be another program reading,
     //      but I'll leave it like this for now.
-    uint64_t result = fread(buffer, 1, 4, mp3.stream);
+    uint64_t result = fread(buffer, 1, 4, mp3->stream);
 
 
     if (result != 4) {
@@ -128,13 +128,13 @@ int read_header(uint64_t position, mp3_container mp3) {
         ChannelMode mode = (buffer[3] & 0xf0) >> 6;
 
 
-        if (mp3.info_offset == 0) {
+        if (mp3->info_offset == 0) {
             if (mode == Mono) {
-                mp3.info_offset = mp3.start + 21;
+                mp3->info_offset = mp3->start + 21;
             }
 
             else {
-                mp3.info_offset = mp3.start + 36;
+                mp3->info_offset = mp3->start + 36;
 
                 if (mode == JointStereo) {
                     // TODO figure out which joint stereo mode is used
