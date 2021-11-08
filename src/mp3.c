@@ -2,6 +2,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#define XING 0x58696E67
+#define INFO 0x496E666F
 
 // lookup for bitrates of MPEG-1 Layer 3 stanard in kb/s
 const uint16_t bitrate_lookup_table[14] = {32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320};
@@ -184,12 +186,12 @@ int read_xing(mp3_container* mp3) {
     uint64_t result = fread(&tag, 4, 1, mp3->stream);
 
     // if the tag is an 'Info' tag
-    if (tag == 0x496E666F) {
+    if (tag == INFO) {
         // TODO
     }
 
     // if the tag is a 'Xing' tag
-    else if (tag == 0x58696E67) {
+    else if (tag == XING) {
         // TODO
     }
 
