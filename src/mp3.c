@@ -185,14 +185,13 @@ int read_xing(mp3_container* mp3) {
 
     uint64_t result = fread(&tag, 4, 1, mp3->stream);
 
-    // if the tag is an 'Info' tag
-    if (tag == INFO) {
+    if (tag == INFO || tag == XING) {
         // TODO
     }
 
-    // if the tag is a 'Xing' tag
-    else if (tag == XING) {
-        // TODO
+    else {
+        printf("Position mismatch. Expected magic bytes 'Info' (0x%x) or 'Xing' (0x%x), but got 0x%x instead\n", INFO, XING, tag);
+        return -1;
     }
 
     else {
