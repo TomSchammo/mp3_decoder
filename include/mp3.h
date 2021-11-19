@@ -70,4 +70,12 @@ int verify_position(FILE* stream, uint64_t position);
  */
 int read_xing(mp3_container* mp3);
 
+
+/**
+ * Reads the mp3 data of a frame TODO
+ *
+ * @return 0 on success, -1 on failure or EOF
+ */
+int read_data(uint64_t position, mp3_container* mp3);
+
 #endif // MP3_H
