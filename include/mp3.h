@@ -12,15 +12,17 @@ typedef uint8_t byte;
  * Struct that contains basic information about the current
  * mp3 file.
  *
- * stream:      a FILE* that contains an open stream for the file
- * start:       location of the first byte of the mp3 data
- * info_offset: the offset to the 'Info' or 'Xing' tag (from the beginning of the file)
+ * stream:       a FILE* that contains an open stream for the file
+ * start:        location of the first byte of the mp3 data
+ * info_offset:  the offset to the 'Info' or 'Xing' tag (from the beginning of the file)
+ * frame_length: Te total length of an mp3 frame
  */
 typedef struct {
 
     FILE* stream;
     uint32_t start;
     uint32_t info_offset;
+    uint32_t frame_length;
 
 } mp3_container;
 
