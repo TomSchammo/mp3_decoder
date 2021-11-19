@@ -124,10 +124,20 @@ int read_header(uint64_t position, mp3_container* mp3) {
 
 
         uint32_t sampling_frequency = sampling_lookup_table[(buffer[2] & 0x0f) >> 2] * 100;
+        printf("sampling frequency: %dHz\n", sampling_frequency);
 
         byte padding = (buffer[2] & 0x02) >> 1;
 
         ChannelMode mode = (buffer[3] & 0xf0) >> 6;
+
+        if (mode == Mono)
+            printf("Mono\n");
+        else if (mode == JointStereo)
+            printf("Joint Stereo\n");
+        else if (mode == Stereo)
+            printf("Stereo\n");
+        else if (mode == DualChannel)
+            printf("Dual Channel\n");
 
 
         if (mp3->info_offset == 0) {
