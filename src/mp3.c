@@ -194,10 +194,41 @@ int read_xing(mp3_container* mp3) {
         return -1;
     }
 
-    else {
-        printf("Position mismatch. Expected magic bytes 'Info' or 'Xing', but got 0x%x instead\n", tag);
+    return 0;
+}
+
+
+
+
+
+int read_data(uint64_t position, mp3_container* mp3) {
+
+    int position_status = verify_position(mp3->stream, position);
+
+    if (position_status == -1)
+        return -1;
+
+    else if (position_status == 1)
+        return -1;
+
+
+    uint32_t data_length = mp3->frame_length -4;
+
+    byte buffer[data_length];
+
+
+    uint64_t result = fread(buffer, 1, data_length, mp3->stream);
+
+
+    if (result != data_length) {
+        // TODO should probably just try again and read what's missing
+        printf("[MP3] [read_data] Reading the file resulted in a failure\n");
         return -1;
     }
 
+    // TODO what to do with data???
+
+
     return 0;
 }
+
