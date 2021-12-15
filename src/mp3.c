@@ -76,13 +76,14 @@ int read_header(uint64_t position, mp3_container* mp3) {
      return 0;
 
 
-    byte buffer[4];
+    byte buffer_size = 4;
+    byte buffer[buffer_size];
 
 
     // TODO I don't know if the file has to be locked.
     //      Theoretically there should not be another program reading,
     //      but I'll leave it like this for now.
-    uint64_t result = fread(buffer, 1, 4, mp3->stream);
+    uint64_t result = fread(buffer, sizeof(byte), buffer_size, mp3->stream);
 
 
     if (result != 4) {
@@ -193,7 +194,7 @@ int read_xing(mp3_container* mp3) {
 
     uint32_t tag;
 
-    uint64_t result = fread(&tag, 4, 1, mp3->stream);
+    uint64_t result = fread(&tag, sizeof(uint32_t), 1, mp3->stream);
 
     if (tag == INFO || tag == XING) {
         // TODO
