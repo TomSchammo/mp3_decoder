@@ -1,4 +1,5 @@
 #include "mp3.h"
+#include <cstdio>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -139,6 +140,8 @@ int read_header(uint64_t position, mp3_container* mp3) {
             printf("Stereo\n");
         else if (mode == DualChannel)
             printf("Dual Channel\n");
+        else
+            printf("Error: Channel mode with value %d not known", mode);
 
 
         if (mp3->info_offset == 0) {
@@ -216,11 +219,11 @@ int read_data(uint64_t position, mp3_container* mp3) {
 
     int position_status = verify_position(mp3->stream, position);
 
-    if (position_status == -1)
-        return -1;
+    if (position_status == -1 || position_status == 1) {
 
-    else if (position_status == 1)
+        printf("Could not verify position (verify_position returned %d)", position_status);
         return -1;
+    }
 
 
     uint32_t data_length = mp3->frame_length -4;
