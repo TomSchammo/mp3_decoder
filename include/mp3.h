@@ -66,7 +66,7 @@ int verify_position(FILE* stream, uint64_t position);
 /**
  * Reads a Xing or Info tag
  *
- * @param mp3 is pointer to a container containing various information about the mp3 file
+ * @param mp3 is a pointer to a container containing various information about the mp3 file
  *
  * @return 0 on success, -1 on failure
  */
