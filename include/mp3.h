@@ -80,4 +80,17 @@ int read_xing(mp3_container* mp3);
  */
 int read_data(uint64_t position, mp3_container* mp3);
 
+
+/**
+ * Reads the Cyclic redundancy checksum from the file and
+ * returns it.
+ *
+ * @param position is the intended position of the filestream
+ * @param mp3      is a pointer to a container containing various information about the mp3 file
+ * @param crc      is a buffer that the checksun will be written into
+ *
+ * @return 0 on success -1 on failure
+ */
+int read_crc(uint64_t position, mp3_container* mp3, uint16_t* crc);
+
 #endif // MP3_H

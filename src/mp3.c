@@ -28,6 +28,23 @@ typedef enum {
 } Emphasis;
 
 
+int read_crc(uint64_t position, mp3_container *mp3, uint16_t* crc) {
+
+    int status = verify_position(mp3->stream, position);
+
+    if (status == -1 || status == 1)
+        return -1;
+
+    byte result = fread(crc, sizeof(uint16_t), 1, mp3->stream);
+
+    if (result != sizeof(uint16_t)) {
+        printf("[MP3] Reading the file resulted in a failure\n");
+        return -1;
+    }
+
+    return 0;
+}
+
 uint32_t calculate_frame_length(uint32_t bit_rate, uint32_t sample_rate, byte padding) {
 
     // TODO this 144 differs for other MPEG version and Layers
